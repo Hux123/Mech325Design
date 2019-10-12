@@ -1,24 +1,46 @@
 from conversions import *
+import matplotlib.pyplot as plt
+
 
 class gearBoxObject():
+    """[Gearbox object for any configuration of gears]
 
+    Returns:
+        [Gearbox Object] -- [Object representing the properties of any gear configuration]
+    """
 
     def __init__(self, gearsList, indexCombination):
+        """[Constructor]
+        
+        Arguments:
+            gearsList {[list of json dictionaries]} -- [list of gears from the json file]
+            indexCombination {[list of ints]} -- [indices for this configuration of the gears]
+        """
+        self.indexCombination = indexCombination
         self.gearSet = []
         for index in indexCombination:
             self.gearSet.append(gearsList[index])
         self.gearPairs = {}
         for pairIndex in range(0,len(indexCombination) - 1):
             self.gearSet[pairIndex]["material"] = self.gearSet[pairIndex]["material"].split(" ")[0]
-            self.gearSet[pairIndex]["material"] = self.gearSet[pairIndex + 1]["material"].split(" ")[0] 
+            self.gearSet[pairIndex + 1]["material"] = self.gearSet[pairIndex + 1]["material"].split(" ")[0] 
             self.gearPairs[pairIndex] = {}
             self.gearPairs[pairIndex]["gears"] = [self.gearSet[pairIndex], self.gearSet[pairIndex + 1]]
 
 
     def validGearBoxPitch(self):
+        """[Checks to see if the gearbox is valid, eg: having the same pitches]
+        
+        Returns:
+            [boolean] -- [True or False about whether the gearbox is valid]
+        """
         for pairNumber, gearPair in self.gearPairs.items():
             firstGear = gearPair["gears"][0]
             secondGear = gearPair["gears"][1]
+            print("________________________")
+            print(self.indexCombination)
+            print(firstGear["pitch"])
+            print(secondGear["pitch"])
             if firstGear["pitch"] != secondGear["pitch"]:
                 return False
 
@@ -26,6 +48,18 @@ class gearBoxObject():
 
 
     def calc(self, omega, torqueInput):
+        """[Does all the calculations for the gear set given an omega and input torque]
+        
+        Arguments:
+            omega {[double]} -- [input rotational rpm]
+            torqueInput {[double]} -- [input torque]
+        
+        Returns:
+            [double] -- [the final output omega]
+            [double] -- [the final output torque]
+            [gear pair] -- [a dictionary of the gear pairs with updated value, eg: tangential velocity and force]
+        """
+
         omegaSoFar = omega
         torqueSoFar = torqueNmToPoundFeet(torqueInput) * self.gearPairs[0]["gears"][0]["efficiency"] 
         tangentialVelocity = omegaSoFar * (inchToFeet(self.gearPairs[0]["gears"][0]["pitch_diameter"]) / 2)
@@ -48,8 +82,6 @@ class gearBoxObject():
             torqueSoFar = torqueSoFar * gearTorqueRatio * secondGear["efficiency"]
             omegaSoFar = omegaSoFar * gearOmegaRatio
 
-            print(omegaSoFar)
-        input("__________")
         
         finalOmega = omegaSoFar
         finalTorque = torqueSoFar
@@ -58,6 +90,19 @@ class gearBoxObject():
 
 
     def createOmegaTorqueGraph(self, torqueList, omegaList, showPlot = False):
+        """[Creates the omegavs torque graph for the input motor values for this configuration of gears]
+        
+        Arguments:
+            torqueList {[list of double]} -- [list of the possible input torque values of the motor]
+            omegaList {[list of double]} -- [list of the possible input rpm values of the motor]
+        
+        Keyword Arguments:
+            showPlot {bool} -- [requires to be truw in order to show the plot] (default: {False})
+        
+        Returns:
+            [list of double] -- [list of omega outputs]
+            [list of double] -- [list of torque outputs]
+        """
 
         omegaOutputList = []
         torqueOutputList = []
@@ -72,8 +117,8 @@ class gearBoxObject():
             # If we pass, we will add the values
             # Otherwise we will simply add (0,0) to the set
             if passStressChecks:
-                omegaOutputList.append(omega)
-                torqueOutputList.append(torque)
+                omegaOutputList.append(outputOmega)
+                torqueOutputList.append(outputTorque)
             else:
                 omegaOutputList.append(0)
                 torqueOutputList.append(0)

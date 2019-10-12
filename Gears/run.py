@@ -3,6 +3,9 @@ from conversions import *
 from GearBoxObject import *
 from MotorInput import *
 from GearCalc import *
+import matplotlib.pyplot as plt
 
 
-createPairsList(3, "gear_data.json", True)
+createGearCombinations(3, "gear_data.json", True)
+"""[run function required]
+"""
