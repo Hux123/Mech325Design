@@ -19,13 +19,15 @@ class gearBoxObject():
         self.indexCombination = indexCombination
         self.gearSet = []
         for index in indexCombination:
+            gearsList[index]["material"] = gearsList[index]["material"].split(" ")[0]
             self.gearSet.append(gearsList[index])
         self.gearPairs = {}
-        for pairIndex in range(0,len(indexCombination) - 1):
-            self.gearSet[pairIndex]["material"] = self.gearSet[pairIndex]["material"].split(" ")[0]
-            self.gearSet[pairIndex + 1]["material"] = self.gearSet[pairIndex + 1]["material"].split(" ")[0] 
+        pairIndex = 0
+        while pairIndex < len(self.gearSet):
+            print(pairIndex)
             self.gearPairs[pairIndex] = {}
             self.gearPairs[pairIndex]["gears"] = [self.gearSet[pairIndex], self.gearSet[pairIndex + 1]]
+            pairIndex += 2
 
 
     def validGearBoxPitch(self):
@@ -37,10 +39,6 @@ class gearBoxObject():
         for pairNumber, gearPair in self.gearPairs.items():
             firstGear = gearPair["gears"][0]
             secondGear = gearPair["gears"][1]
-            print("________________________")
-            print(self.indexCombination)
-            print(firstGear["pitch"])
-            print(secondGear["pitch"])
             if firstGear["pitch"] != secondGear["pitch"]:
                 return False
 
@@ -62,7 +60,6 @@ class gearBoxObject():
 
         omegaSoFar = omega
         torqueSoFar = torqueNmToPoundFeet(torqueInput) * self.gearPairs[0]["gears"][0]["efficiency"] 
-        tangentialVelocity = omegaSoFar * (inchToFeet(self.gearPairs[0]["gears"][0]["pitch_diameter"]) / 2)
 
         for pairIndex, gearPair in self.gearPairs.items():
             firstGear = gearPair["gears"][0]
@@ -72,10 +69,8 @@ class gearBoxObject():
             gearTorqueRatio = secondGear["teeth"] / firstGear["teeth"]
 
             tangentialForce = torqueSoFar / (firstGear["pitch_diameter"] / 2)
+            tangentialVelocity = omegaSoFar * (firstGear["pitch_diameter"] / 2)
 
-            if firstGear["pitch"] != secondGear["pitch"]:
-                return False, False, False
-            
             self.gearPairs[pairIndex]["tangential_force"] = tangentialForce
             self.gearPairs[pairIndex]["tangential_velocity"] = tangentialVelocity
 
@@ -87,7 +82,6 @@ class gearBoxObject():
         finalTorque = torqueSoFar
 
         return finalOmega, torquePoundFeetToNm(finalTorque), self.gearPairs
-
 
     def createOmegaTorqueGraph(self, torqueList, omegaList, showPlot = False):
         """[Creates the omegavs torque graph for the input motor values for this configuration of gears]

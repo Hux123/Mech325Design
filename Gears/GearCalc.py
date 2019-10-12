@@ -21,7 +21,7 @@ def readJsonGear(gearsJson):
     return gearsList
 
 
-def createAllPermutationIndices( overallNumberOfGears, minNumberOfGears = 1, maxNumberOfGears = 5):
+def createAllPermutationIndices( overallNumberOfGears, minNumberOfGears = 1, maxNumberOfGears = 10):
     """[Creates all the permutations of the indices to be used with the gearsList]
 
     Arguments:
@@ -40,8 +40,10 @@ def createAllPermutationIndices( overallNumberOfGears, minNumberOfGears = 1, max
     keysList = [i for i in range(0,overallNumberOfGears)]
     IndicesPermutationsDictionary = {}
     for numOfGears in range(minNumberOfGears, maxNumberOfGears + 1):
-        IndicesList =  keysList * numOfGears
-        IndicesPermutationsDictionary[numOfGears] = itertools.permutations(IndicesList, numOfGears)
+        # We can only have an even number of gears
+        if numOfGears % 2 == 0:
+            IndicesList =  keysList * numOfGears
+            IndicesPermutationsDictionary[numOfGears] = itertools.permutations(IndicesList, numOfGears)
     return IndicesPermutationsDictionary
 
 

@@ -6,6 +6,6 @@ from GearCalc import *
 import matplotlib.pyplot as plt
 
 
-createGearCombinations(3, "gear_data.json", True)
+createGearCombinations(6, "gear_data.json", True)
 """[run function required]
 """
