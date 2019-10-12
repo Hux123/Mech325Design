@@ -18,26 +18,5 @@ def createAllPermutations(gearsJson, minNumberOfGears = 1, maxNumberOfGears = 5)
     return
 
 
-
-
-    
-
-
-# def returnDesiredPermutations(gearsJson, minNumofGears = None, maxNumOfGears = 0,
-#                               minSpeedReq = None, maxPowerReq = None, 
-#                               minTorqueReq = None, maxTorqueReq = None):
-
-
-
-# d = {}
-# for i in range(10):
-
-#     d[i] = i
-
-
-# with open('gearsJson.json', 'w') as outfile:
-#     json.dump(d, outfile)
-
-
 gearJson = 'gearsJson.json'
 createAllPermutations(gearJson)
