@@ -43,7 +43,7 @@ def ShowResults(numberOfGears, jsonFiles, showFigure = False):
         thisGearBox = gearBoxObject(gearsList, indexCombination)
         if thisGearBox.validGearBoxPitch():
             print("valid configuration")
-            gearBoxOmegaOutputList, gearBoxTorqueOutputList = thisGearBox.createOmegaTorqueGraph(motorTorqueList, motorOmegaList, showPlot = False)
+            gearBoxOmegaOutputList, gearBoxTorqueOutputList, motorOmegaOutputList, motorTorqueOutputList = thisGearBox.createOmegaTorqueGraph(motorTorqueList, motorOmegaList, showPlot = False)
 
             if showFigure:
                 plt.plot(motorOmegaList, motorTorqueList, "blue", label = "Motor")
@@ -81,21 +81,25 @@ def FindBest(numberOfGears, jsonFiles, showFigure = True):
     chamberPressure = findPressure(pistonVelocity)
     requiredForce = findForce(chamberPressure)
     powerScrewTorqueList = powerScrewTorque(requiredForce,powerScrewPitch,powerScrewMeanDiameter,frictionCoeff,threadAngle/2)
+    powerScrew = powerScrewObject()
 
 
-    bestOutPut = 0
+    bestOutPutScore = 0
     bestTorque = 0
     bestOmega = 0
     bestGearBoxOmegaOutputList = []
     bestGearBoxTorqueOutputList = []
     bestPowerScrewTorqueList = []
     bestPowerScrewRPMList = []
+    bestGearSet = None
+    bestMotorInput = [0,0]
+    bestOutputFlowRate= 0
+
 
     gearsList = readJsonGear(jsonFiles)
     totalNumberOfAvailableGears = len(gearsList)
     permutationIndices = createAllPermutationIndices(totalNumberOfAvailableGears)[numberOfGears]
     motorOmegaList, motorTorqueList = motorValues()
-
 
 
     # for indexCombination in permutationIndices:
@@ -104,37 +108,71 @@ def FindBest(numberOfGears, jsonFiles, showFigure = True):
         thisGearBox = gearBoxObject(gearsList, indexCombination)
         if thisGearBox.validGearBoxPitch():
             # print("valid configuration")
-            gearBoxOmegaOutputList, gearBoxTorqueOutputList = thisGearBox.createOmegaTorqueGraph(motorTorqueList, motorOmegaList, showPlot = False)
+            gearBoxOmegaOutputList, gearBoxTorqueOutputList= thisGearBox.createOmegaTorqueGraph(motorTorqueList, motorOmegaList, showPlot = False)
+            
 
-            # print([gearBoxOmegaOutputList, gearBoxTorqueOutputList])
-            # print([rpmList,powerScrewTorqueList])
+            intersectionRPM, intersectionTorque, motorOmegaInput, motorTorqueInput  = findIntersection([gearBoxOmegaOutputList, gearBoxTorqueOutputList],[rpmList,powerScrewTorqueList], [motorOmegaList, motorTorqueList])
+            
+            thisOutputFlowRate = calculateOutputFlow(intersectionRPM)
+            thisOutputScore = thisOutputFlowRate / float(thisGearBox.gearSetPrice + powerScrewCost)
+            
+            motorInput = [motorOmegaInput, motorTorqueInput]
 
-            intersectionRPM, intersectionTorque = findIntersection([gearBoxOmegaOutputList, gearBoxTorqueOutputList],[rpmList,powerScrewTorqueList])
-            thisOutput = intersectionRPM / float(thisGearBox.gearSetPrice)
 
-            # print(intersectionRPM)
-            # print(thisOutput)
-            # print("________________________________")
-            # input()
-
-            if thisOutput > bestOutPut:
-                print("updating")
-                bestOutPut = thisOutput
+            if thisOutputScore > bestOutPutScore:
+                # print("updating")
+                bestOutPutScore = thisOutputScore
                 bestTorque = intersectionTorque
                 bestOmega = intersectionRPM
                 bestGearBoxOmegaOutputList = gearBoxOmegaOutputList
                 bestGearBoxTorqueOutputList = gearBoxTorqueOutputList
                 bestPowerScrewTorqueList = rpmList
                 bestPowerScrewRPMList = powerScrewTorqueList
+                bestGearSet = thisGearBox
+                bestMotorInput = motorInput
+                bestOutputFlowRate = thisOutputFlowRate
         else:
             pass
             # print("Invalid configuration ...")
-        
+    
+    solution = {# "motor_input" : bestMotorInput,
+                # "gear_set": bestGearSet.asDict(),
+                "gearbox_omega_list" : bestGearBoxOmegaOutputList,
+                "gearbox_torque_lsit" : bestGearBoxTorqueOutputList,
+                # "power_screw": powerScrew.asDict(),
+                "power_screw_omega_list" : bestPowerScrewRPMList,
+                "power_screw_torque_list" : bestPowerScrewTorqueList,
+                "intersection_rpm": bestOmega,
+                "intersection_torque": bestTorque,
+                "score": bestOutPutScore,
+                "flowrate": bestOutputFlowRate
+                 }
+
+    print(type(bestPowerScrewRPMList.tolist()))
+
+    solution = {
+                "motor_input" : bestMotorInput,
+                "gear_set": bestGearSet.asDict(),
+                "gearbox_omega_list" : bestGearBoxOmegaOutputList,
+                "gearbox_torque_lsit" : bestGearBoxTorqueOutputList,
+                "power_screw": powerScrew.asDict(),
+                "power_screw_omega_list" : bestPowerScrewRPMList.tolist(),
+                "power_screw_torque_list" : bestPowerScrewTorqueList.tolist(),
+                "intersection_rpm": bestOmega,
+                "intersection_torque": bestTorque,
+                "score": bestOutPutScore,
+                "flowrate": bestOutputFlowRate
+                 }
+    
+    # Saving the solution
+    with open('Solution.json', 'w') as fp:
+        json.dump(solution, fp)
 
     if showFigure:
-            print("The best output was: ", bestOutPut)
+            print("The best output was: ", bestOutPutScore)
             print("Best torque: ", bestTorque)
             print("Best RPM: ", bestOmega)
+            print("best flowrate: ", bestOutputFlowRate)
             plt.plot(motorOmegaList, motorTorqueList, "blue", label = "Motor")
             plt.plot(bestGearBoxOmegaOutputList, bestGearBoxTorqueOutputList, "red", label = "GearBox")
             plt.plot(bestPowerScrewRPMList, powerScrewTorqueList, "green", label = "PowerScrew")
@@ -147,6 +185,6 @@ def FindBest(numberOfGears, jsonFiles, showFigure = True):
     return True
 
 
-FindBest(4, "gear_data.json", True)
+FindBest(2, "gear_data.json", True)
 """[run function required]
 """

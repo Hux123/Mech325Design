@@ -13,12 +13,43 @@ from matplotlib import pyplot as plt
 # In[25]:
 
 
+class powerScrewObject():
+    """[This is he power screw object]
+
+    Returns:
+        [type] -- [description]
+    """
+    def __init__(self):
+        self.powerScrewPitch = 0.00508 #m/rotation
+        self.powerScrewMajorDiameter = 0.01905 #m
+        self.frictionCoeff = 0.2
+        self.threadAngle = 29  #degrees
+        self.pistonDiameter = 0.1 #m
+        self.powerScrewCost = 9.38   
+
+    def asDict(self):
+        """[returns object as a dictionary]
+        
+        Returns:
+            [dictionary] -- [object as a dictionary]
+        """
+        powerScrewDict = {"powerScrewCost": self.powerScrewCost,
+                          "powerScrewmajorDiameter": self.powerScrewMajorDiameter,
+                          "frictionCoeff": self.frictionCoeff,
+                          "threadAngle": self.threadAngle,
+                          "pistonDiameter": self.pistonDiameter,
+                          "powerScrewCost": self.powerScrewCost}
+        return powerScrewDict
+
+    
+
 #Define constants of power screw
 powerScrewPitch = 0.00508 #m/rotation
 powerScrewMajorDiameter = 0.01905 #m
 frictionCoeff = 0.2
 threadAngle = 29  #degrees
 pistonDiameter = 0.1 #m
+powerScrewCost = 9.38
 
 pistonArea = math.pi*(pistonDiameter)**2 #mm^2
 
@@ -59,19 +90,4 @@ def powerScrewTorque(F,l,dm,f,alpha):
     Torque = ((F*dm)/2)*((l+math.pi*f*dm*secant(alpha*(math.pi/180)))/(math.pi*dm-f*l*secant(alpha*(math.pi/180))))
     return Torque
 
-# powerScrewMeanDiameter = calculateMeanDiameter(powerScrewMajorDiameter,powerScrewPitch)
-
-# #Create array of possible RPM's to graph
-# rpm = np.arange(0,2000,1)
-
-# pistonVelocity = findPistonVelocity(rpm,powerScrewPitch)
-# chamberPressure = findPressure(pistonVelocity)
-# requiredForce = findForce(chamberPressure)
-
-# print("Output Flow Rate: %.2f mL/s" % calculateOutputFlow(1000))
-
-# plt.plot(rpm,powerScrewTorque(requiredForce,powerScrewPitch,powerScrewMeanDiameter,frictionCoeff,threadAngle/2))
-# plt.xlabel("RPM")
-# plt.ylabel("Torque Requirement")
-# plt.title("Torque required vs RPM")
 

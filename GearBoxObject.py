@@ -30,6 +30,7 @@ class gearBoxObject():
             self.gearPairs[pairIndex] = {}
             self.gearPairs[pairIndex]["gears"] = [self.gearSet[pairIndex], self.gearSet[pairIndex + 1]]
             pairIndex += 2
+        
 
 
     def validGearBoxPitch(self):
@@ -147,3 +148,26 @@ class gearBoxObject():
             plt.clf()
         
         return omegaOutputList, torqueOutputList
+    
+
+        self.indexCombination = indexCombination
+        self.gearSet = []
+        for index in indexCombination:
+            gearsList[index]["material"] = gearsList[index]["material"].split(" ")[0]
+            self.gearSet.append(gearsList[index])
+        self.gearPairs = {}
+        self.gearSetPrice = sum(gear["cost"] for gear in self.gearSet)
+
+
+    def asDict(self):
+        """[returns object as a dictionary]
+        
+        Returns:
+            [dictionary] -- [object as a dictionary]
+        """
+        gearBoxDict = {"gearSet": self.gearSet,
+                       "indexCombination": self.indexCombination,
+                       "gearPairs": self.gearPairs,
+                       "gearSetPrice": self.gearSetPrice}
+        return gearBoxDict
+
