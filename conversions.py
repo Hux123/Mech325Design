@@ -1,4 +1,9 @@
 # Conversion of units
+"""[This is pretty self explanatory, some can check over them]
+
+Returns:
+    [double] -- [converted values]
+"""
 def ItoSIVelocity(I): 
     return(0.00508*I)
     
@@ -16,3 +21,15 @@ def ItoSIForce(I):
     
 def SItoIForce(SI):
     return(SI*0.224809)
+
+def inchToFeet(inch):
+    return inch / 12
+
+def newtonToPound(newton):
+    return newton * 0.224809
+
+def torqueNmToPoundFeet(torqueNm):
+    return torqueNm * 0.737562
+
+def torquePoundFeetToNm(torquePoundFeet):
+    return torquePoundFeet /  0.737562

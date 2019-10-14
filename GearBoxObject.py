@@ -1,5 +1,6 @@
 from conversions import *
 import matplotlib.pyplot as plt
+from GearStressCalculations import *
 
 
 class gearBoxObject():
@@ -15,6 +16,7 @@ class gearBoxObject():
         Arguments:
             gearsList {[list of json dictionaries]} -- [list of gears from the json file]
             indexCombination {[list of ints]} -- [indices for this configuration of the gears]
+            cost{[double]} -- [price of this gear set]
         """
         self.indexCombination = indexCombination
         self.gearSet = []
@@ -22,6 +24,7 @@ class gearBoxObject():
             gearsList[index]["material"] = gearsList[index]["material"].split(" ")[0]
             self.gearSet.append(gearsList[index])
         self.gearPairs = {}
+        self.gearSetPrice = sum(gear["cost"] for gear in self.gearSet)
         pairIndex = 0
         while pairIndex < len(self.gearSet):
             self.gearPairs[pairIndex] = {}
@@ -60,6 +63,9 @@ class gearBoxObject():
         omegaSoFar = omega
         torqueSoFar = torqueNmToPoundFeet(torqueInput) * self.gearPairs[0]["gears"][0]["efficiency"] 
 
+        # Dictionary sent to Cailing for stress analysis
+        stressAnalysisPairs = {}
+
         for pairIndex, gearPair in self.gearPairs.items():
             firstGear = gearPair["gears"][0]
             secondGear = gearPair["gears"][1]
@@ -75,6 +81,17 @@ class gearBoxObject():
 
             torqueSoFar = torqueSoFar * gearTorqueRatio * secondGear["efficiency"]
             omegaSoFar = omegaSoFar * gearOmegaRatio
+
+            # This is what Cailin required
+            # Smaller gear first
+            stressAnalysisPairs[pairIndex] = {}
+            if firstGear["teeth"] > secondGear["teeth"]:
+                stressAnalysisPairs[pairIndex]["gears"] = [secondGear, firstGear]
+            else:
+                stressAnalysisPairs[pairIndex]["gears"] = [firstGear, secondGear]
+            
+            stressAnalysisPairs[pairIndex]["tangential_force"] = tangentialForce
+            stressAnalysisPairs[pairIndex]["tangential_velocity"] = tangentialVelocity
 
         
         finalOmega = omegaSoFar
@@ -103,10 +120,18 @@ class gearBoxObject():
         for index in range(0, len(torqueList)):
             omega = omegaList[index]
             torque = torqueList[index]
-            outputOmega, outputTorque, gearPairs = self.calc(omega, torque)
-            # Here we will check the values returned by cailin
-            passStressChecks = True
+            outputOmega, outputTorque, stressAnalysisPairs = self.calc(omega, torque)
             
+            # Here we will check the values returned by Cailin
+            # We will consider this function for all the gear sets
+            passStressChecks = True
+            for gearPairKey in stressAnalysisPairs.keys():
+                gearPairDictionary = stressAnalysisPairs[gearPairKey]
+                thisGearPairStressChecks = checkStresses(gearPairDictionary)
+                if thisGearPairStressChecks == False:
+                    passStressChecks = False
+                    break
+
             # If we pass, we will add the values
             # Otherwise we will simply add (0,0) to the set
             if passStressChecks:

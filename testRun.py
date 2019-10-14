@@ -1,0 +1,152 @@
+import itertools
+import json
+import tqdm
+from conversions import *
+from GearBoxObject import *
+from MotorInput import *
+from GearCalc import *
+import matplotlib.pyplot as plt
+from PowerScrewOutput import *
+from Intersection import *
+
+
+def ShowResults(numberOfGears, jsonFiles, showFigure = False):
+    """[Creates the list of pairs of gear values and carries out the calculation]
+    Incomplete for now
+    
+    Arguments:
+        numberOfGears {[int]} -- [desired number of gears]
+        jsonFiles {[string]} -- [address of the gears json file]
+    
+    Keyword Arguments:
+        showFigure {bool} -- [I don't know what to return for now ] (default: {False})
+    """
+
+    #First we Calculate the power screw info
+    powerScrewMeanDiameter = calculateMeanDiameter(powerScrewMajorDiameter,powerScrewPitch)
+
+    #Create array of possible RPM's to graph
+    rpmList = np.arange(0,2000,1)
+    pistonVelocity = findPistonVelocity(rpmList ,powerScrewPitch)
+    chamberPressure = findPressure(pistonVelocity)
+    requiredForce = findForce(chamberPressure)
+    powerScrewTorqueList = powerScrewTorque(requiredForce,powerScrewPitch,powerScrewMeanDiameter,frictionCoeff,threadAngle/2)
+
+
+    gearsList = readJsonGear(jsonFiles)
+    totalNumberOfAvailableGears = len(gearsList)
+    permutationIndices = createAllPermutationIndices(totalNumberOfAvailableGears)[numberOfGears]
+    motorOmegaList, motorTorqueList = motorValues()
+
+    for indexCombination in permutationIndices:
+
+        thisGearBox = gearBoxObject(gearsList, indexCombination)
+        if thisGearBox.validGearBoxPitch():
+            print("valid configuration")
+            gearBoxOmegaOutputList, gearBoxTorqueOutputList = thisGearBox.createOmegaTorqueGraph(motorTorqueList, motorOmegaList, showPlot = False)
+
+            if showFigure:
+                plt.plot(motorOmegaList, motorTorqueList, "blue", label = "Motor")
+                plt.plot(gearBoxOmegaOutputList, gearBoxTorqueOutputList, "red", label = "GearBox")
+                plt.plot(rpmList, powerScrewTorqueList, "green", label = "PowerScrew")
+                plt.show()
+                plt.clf()
+        else:
+            print("Invalid configuration ...")
+        
+        input("Next")
+    
+    return True
+
+
+def FindBest(numberOfGears, jsonFiles, showFigure = True):
+    """[Creates the list of pairs of gear values and carries out the calculation
+    Finds the best value ratio for rpm/price]
+    Incomplete for now
+    
+    Arguments:
+        numberOfGears {[int]} -- [desired number of gears]
+        jsonFiles {[string]} -- [address of the gears json file]
+    
+    Keyword Arguments:
+        showFigure {bool} -- [I don't know what to return for now ] (default: {False})
+    """
+
+    #First we Calculate the power screw info
+    powerScrewMeanDiameter = calculateMeanDiameter(powerScrewMajorDiameter,powerScrewPitch)
+
+    #Create array of possible RPM's to graph
+    rpmList = np.arange(0,5000,1)
+    pistonVelocity = findPistonVelocity(rpmList ,powerScrewPitch)
+    chamberPressure = findPressure(pistonVelocity)
+    requiredForce = findForce(chamberPressure)
+    powerScrewTorqueList = powerScrewTorque(requiredForce,powerScrewPitch,powerScrewMeanDiameter,frictionCoeff,threadAngle/2)
+
+
+    bestOutPut = 0
+    bestTorque = 0
+    bestOmega = 0
+    bestGearBoxOmegaOutputList = []
+    bestGearBoxTorqueOutputList = []
+    bestPowerScrewTorqueList = []
+    bestPowerScrewRPMList = []
+
+    gearsList = readJsonGear(jsonFiles)
+    totalNumberOfAvailableGears = len(gearsList)
+    permutationIndices = createAllPermutationIndices(totalNumberOfAvailableGears)[numberOfGears]
+    motorOmegaList, motorTorqueList = motorValues()
+
+
+
+    # for indexCombination in permutationIndices:
+    for indexCombination in tqdm.tqdm(permutationIndices):
+
+        thisGearBox = gearBoxObject(gearsList, indexCombination)
+        if thisGearBox.validGearBoxPitch():
+            # print("valid configuration")
+            gearBoxOmegaOutputList, gearBoxTorqueOutputList = thisGearBox.createOmegaTorqueGraph(motorTorqueList, motorOmegaList, showPlot = False)
+
+            # print([gearBoxOmegaOutputList, gearBoxTorqueOutputList])
+            # print([rpmList,powerScrewTorqueList])
+
+            intersectionRPM, intersectionTorque = findIntersection([gearBoxOmegaOutputList, gearBoxTorqueOutputList],[rpmList,powerScrewTorqueList])
+            thisOutput = intersectionRPM / float(thisGearBox.gearSetPrice)
+
+            # print(intersectionRPM)
+            # print(thisOutput)
+            # print("________________________________")
+            # input()
+
+            if thisOutput > bestOutPut:
+                print("updating")
+                bestOutPut = thisOutput
+                bestTorque = intersectionTorque
+                bestOmega = intersectionRPM
+                bestGearBoxOmegaOutputList = gearBoxOmegaOutputList
+                bestGearBoxTorqueOutputList = gearBoxTorqueOutputList
+                bestPowerScrewTorqueList = rpmList
+                bestPowerScrewRPMList = powerScrewTorqueList
+        else:
+            pass
+            # print("Invalid configuration ...")
+        
+
+    if showFigure:
+            print("The best output was: ", bestOutPut)
+            print("Best torque: ", bestTorque)
+            print("Best RPM: ", bestOmega)
+            plt.plot(motorOmegaList, motorTorqueList, "blue", label = "Motor")
+            plt.plot(bestGearBoxOmegaOutputList, bestGearBoxTorqueOutputList, "red", label = "GearBox")
+            plt.plot(bestPowerScrewRPMList, powerScrewTorqueList, "green", label = "PowerScrew")
+            plt.xlabel("RPM")
+            plt.ylabel("Best case graph")
+            plt.title("Torque vs RPM")
+            plt.show()
+            plt.clf()
+    
+    return True
+
+
+FindBest(4, "gear_data.json", True)
+"""[run function required]
+"""
