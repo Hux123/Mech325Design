@@ -3,9 +3,9 @@ import math
 # 
 
 overloadFactor = 1.25
-reliabilityFactor = 1.25
 pressureAngle = 20
 qualityFactor = 5
+reliability = 0.999
 estimatedCycles = 500 * 4*10**4 #estimated with the given pitch of the power screw and biggest difference in gear diameter
 bendingStressCycleFactor = 1.3558 * estimatedCycles**-0.0178
 pittingStressCycleFactor =  1.4488 * estimatedCycles ** -0.023
@@ -41,6 +41,17 @@ def getBrinellHardness(material):
         return 120
     if material == 1144:
         return 217
+    
+def getReliabilityFactor(reliability):
+    """[Returns reliability factor]
+    
+    Arguments:
+        material {[double]} -- [Reliability]
+    
+    Returns:
+        [double] -- [Reliability Factor]
+    """
+    return 0.50-0.109*math.log(1 - reliability)
     
 def getElasticModulus(material):
     """[Returns Elastic Modulus for given material]
@@ -270,6 +281,7 @@ def checkStresses(gearPairDictionary):
     gAllowableContactStress = getAllowableContactStress(gHardness)
     
     """ Calculation of required factors """
+    reliabilityFactor = getReliabilityFactor(reliability)
     pDynamicFactor = getDynamicFactor(qualityFactor, tangentialSpeed)
     gDynamicFactor = getDynamicFactor(qualityFactor, tangentialSpeed)
     pSizeFactor = getSizeFactor(diametralPitch, pLewisFormFactor, faceWidth)
@@ -297,6 +309,7 @@ def checkStresses(gearPairDictionary):
         return true
     else:
         return false
+
 
 
 
