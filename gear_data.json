@@ -12,7 +12,8 @@
     "cost": 31.27,
     "efficiency": 0.94,
     "Lewis form factor": 0.322,
-    "geometry factor": 0.325
+    "geometry factor": 0.325,
+    "face width": 0.5
   },
   {
     "number": "5172T57",
@@ -27,7 +28,8 @@
     "cost": 28.50,
     "efficiency": 0.94,
     "Lewis form factor": 0.337,
-    "geometry factor": 0.345
+    "geometry factor": 0.345,
+    "face width": 0.5
   },
   {
     "number": "5172T12",
@@ -42,7 +44,8 @@
     "cost": 23.43,
     "efficiency": 0.94,
     "Lewis form factor": 0.322,
-    "geometry factor": 0.325
+    "geometry factor": 0.325,
+    "face width": 0.5
   },
   {
     "number": "5172T14",
@@ -57,7 +60,8 @@
     "cost": 26.73,
     "efficiency": 0.94,
     "Lewis form factor": 0.359,
-    "geometry factor": 0.37
+    "geometry factor": 0.37,
+    "face width": 0.5
   },
   {
     "number": "5172T15",
@@ -72,7 +76,8 @@
     "cost": 35.49,
     "efficiency": 0.94,
     "Lewis form factor": 0.362,
-    "geometry factor": 0.385
+    "geometry factor": 0.385,
+    "face width": 0.5
   },
   {
     "number": "5172T63",
@@ -87,7 +92,8 @@
     "cost": 31.79,
     "efficiency": 0.94,
     "Lewis form factor": 0.296,
-    "geometry factor": 0.27
+    "geometry factor": 0.27,
+    "face width": 0.75
   },
   {
     "number": "5172T65",
@@ -102,7 +108,8 @@
     "cost": 34.69,
     "efficiency": 0.94,
     "Lewis form factor": 0.245,
-    "geometry factor": 0.21
+    "geometry factor": 0.21,
+    "face width": 1
   },
   {
     "number": "5172T21",
@@ -117,7 +124,8 @@
     "cost": 24.02,
     "efficiency": 0.94,
     "Lewis form factor": 0.296,
-    "geometry factor": 0.27
+    "geometry factor": 0.27,
+    "face width": 0.75
   },
   {
     "number": "5172T31",
@@ -132,7 +140,8 @@
     "cost": 24.02,
     "efficiency": 0.94,
     "Lewis form factor": 0.245,
-    "geometry factor": 0.21
+    "geometry factor": 0.21,
+    "face width": 1
   },
   {
     "number": "5172T16",
@@ -147,7 +156,8 @@
     "cost": 37.43,
     "efficiency": 0.94,
     "Lewis form factor": 0.389,
-    "geometry factor": 0.395
+    "geometry factor": 0.395,
+    "face width": 0.5
   },
   {
     "number": "5172T56",
@@ -162,7 +172,8 @@
     "cost": 20.79,
     "efficiency": 0.94,
     "Lewis form factor": 0.245,
-    "geometry factor": 0.21
+    "geometry factor": 0.21,
+    "face width": 0.5
   },
   {
     "number": "5172T61",
@@ -177,7 +188,8 @@
     "cost": 26.00,
     "efficiency": 0.94,
     "Lewis form factor": 0.290,
-    "geometry factor": 0.25
+    "geometry factor": 0.25,
+    "face width": 0.5
   },
   {
     "number": "5172T55",
@@ -192,7 +204,8 @@
     "cost": 22.39,
     "efficiency": 0.94,
     "Lewis form factor": 0.245,
-    "geometry factor": 0.21
+    "geometry factor": 0.21,
+    "face width": 0.75
   },
   {
     "number": "5172T22",
@@ -207,7 +220,8 @@
     "cost": 26.73,
     "efficiency": 0.94,
     "Lewis form factor": 0.337,
-    "geometry factor": 0.345
+    "geometry factor": 0.345,
+    "face width": 0.75
   },
   {
     "number": "5172T23",
@@ -222,7 +236,8 @@
     "cost": 41.73,
     "efficiency": 0.94,
     "Lewis form factor": 0.365,
-    "geometry factor": 0.375
+    "geometry factor": 0.375,
+    "face width": 0.75
   },
   {
     "number": "5172T24",
@@ -237,7 +252,8 @@
     "cost": 58.94,
     "efficiency": 0.94,
     "Lewis form factor": 0.406,
-    "geometry factor": 0.405
+    "geometry factor": 0.405,
+    "face width": 0.75
   },
   {
     "number": "5172T66",
@@ -252,7 +268,8 @@
     "cost": 43.50,
     "efficiency": 0.94,
     "Lewis form factor": 0.290,
-    "geometry factor": 0.25
+    "geometry factor": 0.25,
+    "face width": 1
   },
   {
     "number": "5172T33",
@@ -267,7 +284,8 @@
     "cost": 37.43,
     "efficiency": 0.94,
     "Lewis form factor": 0.328,
-    "geometry factor": 0.325
+    "geometry factor": 0.325,
+    "face width": 1
   },
   {
     "number": "5172T34",
@@ -282,7 +300,8 @@
     "cost": 44.33,
     "efficiency": 0.94,
     "Lewis form factor": 0.337,
-    "geometry factor": 0.345
+    "geometry factor": 0.345,
+    "face width": 1
   },
   {
     "number": "5172T25",
@@ -297,7 +316,8 @@
     "cost": 63.12,
     "efficiency": 0.94,
     "Lewis form factor": 0.376,
-    "geometry factor": 0.385
+    "geometry factor": 0.385,
+    "face width": 1
   },
   {
     "number": "5172T51",
@@ -312,7 +332,8 @@
     "cost": 37.79,
     "efficiency": 0.94,
     "Lewis form factor": 0.290,
-    "geometry factor": 0.25
+    "geometry factor": 0.25,
+    "face width": 1.25
   },
   {
     "number": "5172T52",
@@ -327,7 +348,8 @@
     "cost": 49.57,
     "efficiency": 0.94,
     "Lewis form factor": 0.322,
-    "geometry factor": 0.325
+    "geometry factor": 0.325,
+    "face width": 1.25
   },
   {
     "number": "5172T41",
@@ -342,7 +364,8 @@
     "cost": 47.76,
     "efficiency": 0.94,
     "Lewis form factor": 0.245,
-    "geometry factor": 0.21
+    "geometry factor": 0.21,
+    "face width": 1.5
   },
   {
     "number": "5172T69",
@@ -357,7 +380,8 @@
     "cost": 68.81,
     "efficiency": 0.94,
     "Lewis form factor": 0.245,
-    "geometry factor": 0.21
+    "geometry factor": 0.21,
+    "face width": 1.5
   },
   {
     "number": "5172T42",
@@ -372,7 +396,8 @@
     "cost": 61.14,
     "efficiency": 0.94,
     "Lewis form factor": 0.296,
-    "geometry factor": 0.27
+    "geometry factor": 0.27,
+    "face width": 1.5
   },
   {
     "number": "5172T11",
@@ -387,7 +412,8 @@
     "cost": 21.43,
     "efficiency": 0.94,
     "Lewis form factor": 0.290,
-    "geometry factor": 0.25
+    "geometry factor": 0.25,
+    "face width": 0.5
   },
   {
     "number": "5172T13",
@@ -402,7 +428,8 @@
     "cost": 24.37,
     "efficiency": 0.94,
     "Lewis form factor": 0.342,
-    "geometry factor": 0.35
+    "geometry factor": 0.35,
+    "face width": 0.5
   },
   {
     "number": "5172T58",
@@ -417,7 +444,8 @@
     "cost": 52.51,
     "efficiency": 0.94,
     "Lewis form factor": 0.409,
-    "geometry factor": 0.41
+    "geometry factor": 0.41,
+    "face width": 0.5
   },
   {
     "number": "5172T59",
@@ -432,7 +460,8 @@
     "cost": 53.63,
     "efficiency": 0.94,
     "Lewis form factor": 0.422,
-    "geometry factor": 0.42
+    "geometry factor": 0.42,
+    "face width": 0.5
   },
   {
     "number": "5172T32",
@@ -447,7 +476,8 @@
     "cost": 30.02,
     "efficiency": 0.94,
     "Lewis form factor": 0.290,
-    "geometry factor": 0.25
+    "geometry factor": 0.25,
+    "face width": 1
   },
   {
     "number": "5172T35",
@@ -462,7 +492,8 @@
     "cost": 63.12,
     "efficiency": 0.94,
     "Lewis form factor": 0.376,
-    "geometry factor": 0.385
+    "geometry factor": 0.385,
+    "face width": 1
   },
   {
     "number": "5172T36",
@@ -477,7 +508,8 @@
     "cost": 84.49,
     "efficiency": 0.94,
     "Lewis form factor": 0.406,
-    "geometry factor": 0.405
+    "geometry factor": 0.405,
+    "face width": 1
   },
   {
     "number": "5172T53",
@@ -492,7 +524,8 @@
     "cost": 82.00,
     "efficiency": 0.94,
     "Lewis form factor": 0.359,
-    "geometry factor": 0.37
+    "geometry factor": 0.37,
+    "face width": 1.25
   },
   {
     "number": "5172T54",
@@ -507,7 +540,8 @@
     "cost": 109.35,
     "efficiency": 0.94,
     "Lewis form factor": 0.389,
-    "geometry factor": 0.395
+    "geometry factor": 0.395,
+    "face width": 1.25
   },
   {
     "number": "5172T43",
@@ -522,7 +556,8 @@
     "cost": 72.57,
     "efficiency": 0.94,
     "Lewis form factor": 0.322,
-    "geometry factor": 0.325
+    "geometry factor": 0.325,
+    "face width": 1.5
   },
   {
     "number": "5172T44",
@@ -537,7 +572,8 @@
     "cost": 94.61,
     "efficiency": 0.94,
     "Lewis form factor": 0.337,
-    "geometry factor": 0.345
+    "geometry factor": 0.345,
+    "face width": 1.5
   },
   {
     "number": "5172T45",
@@ -552,6 +588,7 @@
     "cost": 111.80,
     "efficiency": 0.94,
     "Lewis form factor": 0.353,
-    "geometry factor": 0.365
+    "geometry factor": 0.365,
+    "face width": 1.5
   }
 ]
