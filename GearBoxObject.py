@@ -1,6 +1,7 @@
 from conversions import *
 import matplotlib.pyplot as plt
 from GearStressCalculations import *
+import math
 
 
 class gearBoxObject():
@@ -75,7 +76,7 @@ class gearBoxObject():
             gearTorqueRatio = secondGear["teeth"] / firstGear["teeth"]
 
             tangentialForce = torqueSoFar / (firstGear["pitch_diameter"] / 2)
-            tangentialVelocity = omegaSoFar * (firstGear["pitch_diameter"] / 2)
+            tangentialVelocity = omegaSoFar * (firstGear["pitch_diameter"] ) * math.pi  / 12
 
             self.gearPairs[pairIndex]["tangential_force"] = tangentialForce
             self.gearPairs[pairIndex]["tangential_velocity"] = tangentialVelocity
@@ -139,6 +140,7 @@ class gearBoxObject():
                 omegaOutputList.append(outputOmega)
                 torqueOutputList.append(outputTorque)
             else:
+                print("FUCK")
                 omegaOutputList.append(outputOmega)
                 torqueOutputList.append(100000000000)
         

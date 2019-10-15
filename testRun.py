@@ -39,12 +39,12 @@ def ShowResults(numberOfGears, jsonFiles, showFigure = False):
     motorOmegaList, motorTorqueList = motorValues()
 
     for indexCombination in permutationIndices:
-
+        print(permutationIndices)
+        print("_____________________________")
         thisGearBox = gearBoxObject(gearsList, indexCombination)
         if thisGearBox.validGearBoxPitch():
             print("valid configuration")
-            gearBoxOmegaOutputList, gearBoxTorqueOutputList, motorOmegaOutputList, motorTorqueOutputList = thisGearBox.createOmegaTorqueGraph(motorTorqueList, motorOmegaList, showPlot = False)
-
+            gearBoxOmegaOutputList, gearBoxTorqueOutputList= thisGearBox.createOmegaTorqueGraph(motorTorqueList, motorOmegaList, showPlot = False)
             if showFigure:
                 plt.plot(motorOmegaList, motorTorqueList, "blue", label = "Motor")
                 plt.plot(gearBoxOmegaOutputList, gearBoxTorqueOutputList, "red", label = "GearBox")
@@ -114,8 +114,11 @@ def FindBest(numberOfGears, jsonFiles, showFigure = True):
             intersectionRPM, intersectionTorque, motorOmegaInput, motorTorqueInput  = findIntersection([gearBoxOmegaOutputList, gearBoxTorqueOutputList],[rpmList,powerScrewTorqueList], [motorOmegaList, motorTorqueList])
             
             thisOutputFlowRate = calculateOutputFlow(intersectionRPM)
-            thisOutputScore = thisOutputFlowRate / float(thisGearBox.gearSetPrice + powerScrewCost)
-            
+            # thisOutputScore = thisOutputFlowRate / float(thisGearBox.gearSetPrice + powerScrewCost)
+            thisOutputScore = intersectionRPM
+
+            print(intersectionRPM)
+
             motorInput = [motorOmegaInput, motorTorqueInput]
 
 
@@ -135,7 +138,7 @@ def FindBest(numberOfGears, jsonFiles, showFigure = True):
             pass
             # print("Invalid configuration ...")
     
-    print(bestGearSet.asDict())
+    # print(bestGearSet.asDict())
 
     solution = {
                 "motor_input" : bestMotorInput,
@@ -162,7 +165,7 @@ def FindBest(numberOfGears, jsonFiles, showFigure = True):
             print("best flowrate: ", bestOutputFlowRate)
             plt.plot(motorOmegaList, motorTorqueList, "blue", label = "Motor")
             plt.plot(bestGearBoxOmegaOutputList, bestGearBoxTorqueOutputList, "red", label = "GearBox")
-            # plt.plot(bestPowerScrewRPMList, powerScrewTorqueList, "green", label = "PowerScrew")
+            plt.plot(bestPowerScrewRPMList, powerScrewTorqueList, "green", label = "PowerScrew")
             plt.xlabel("RPM")
             plt.ylabel("Best case graph")
             plt.title("Torque vs RPM")
@@ -173,5 +176,8 @@ def FindBest(numberOfGears, jsonFiles, showFigure = True):
 
 
 FindBest(2, "gear_data.json", True)
-"""[run function required]
-"""
+# """[run function required]
+# """
+
+
+# ShowResults(2, "gear_data.json", True)
