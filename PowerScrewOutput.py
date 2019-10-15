@@ -51,7 +51,7 @@ threadAngle = 29  #degrees
 pistonDiameter = 0.1 #m
 powerScrewCost = 9.38
 
-pistonArea = math.pi*(pistonDiameter)**2 #mm^2
+pistonArea = math.pi*(pistonDiameter/2)**2 #mm^2
 
 #Define useful functions
 def calculatePerformance(rpm,cost):
