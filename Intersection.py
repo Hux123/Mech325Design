@@ -1,5 +1,5 @@
 
-def findIntersection(gearBox,powerScrew, motorInput):
+def findIntersection(gearBox, powerScrew, motorInput):
     """[Find the Intersection between two line lists]
     
     Arguments:
@@ -15,8 +15,8 @@ def findIntersection(gearBox,powerScrew, motorInput):
     intersectionTorque = 0
     motorInputRPM = 0
     motorInputTorque = 0
-    for index in range(0, len(rpmG)): 
-        if torqueG[index] <= torqueP[index]:
+    for index in range(0, len(rpmG) - 1):
+        if torqueG[index] >= torqueP[index] and torqueG[index + 1] <= torqueP[index + 1]:
             intersectionRPM = rpmG[index]
             intersectionTorque = torqueG[index]
             motorInputRPM = rpmM[index]

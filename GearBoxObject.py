@@ -101,6 +101,7 @@ class gearBoxObject():
 
         return finalOmega, torquePoundFeetToNm(finalTorque), stressAnalysisPairs
 
+
     def createOmegaTorqueGraph(self, torqueList, omegaList, showPlot = False):
         """[Creates the omegavs torque graph for the input motor values for this configuration of gears]
         
@@ -140,9 +141,8 @@ class gearBoxObject():
                 omegaOutputList.append(outputOmega)
                 torqueOutputList.append(outputTorque)
             else:
-                print("FUCK")
-                omegaOutputList.append(outputOmega)
-                torqueOutputList.append(100000000000)
+                omegaOutputList.append(0)
+                torqueOutputList.append(0)
         
         if showPlot:
             plt.plot(omegaOutputList, torqueOutputList)
@@ -152,6 +152,7 @@ class gearBoxObject():
         return omegaOutputList, torqueOutputList
 
 
+    
     def asDict(self):
         """[returns object as a dictionary]
         
