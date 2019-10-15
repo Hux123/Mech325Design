@@ -98,7 +98,7 @@ class gearBoxObject():
         finalOmega = omegaSoFar
         finalTorque = torqueSoFar
 
-        return finalOmega, torquePoundFeetToNm(finalTorque), self.gearPairs
+        return finalOmega, torquePoundFeetToNm(finalTorque), stressAnalysisPairs
 
     def createOmegaTorqueGraph(self, torqueList, omegaList, showPlot = False):
         """[Creates the omegavs torque graph for the input motor values for this configuration of gears]
@@ -139,8 +139,8 @@ class gearBoxObject():
                 omegaOutputList.append(outputOmega)
                 torqueOutputList.append(outputTorque)
             else:
-                omegaOutputList.append(0)
-                torqueOutputList.append(0)
+                omegaOutputList.append(outputOmega)
+                torqueOutputList.append(100000000000)
         
         if showPlot:
             plt.plot(omegaOutputList, torqueOutputList)
@@ -148,15 +148,6 @@ class gearBoxObject():
             plt.clf()
         
         return omegaOutputList, torqueOutputList
-    
-
-        self.indexCombination = indexCombination
-        self.gearSet = []
-        for index in indexCombination:
-            gearsList[index]["material"] = gearsList[index]["material"].split(" ")[0]
-            self.gearSet.append(gearsList[index])
-        self.gearPairs = {}
-        self.gearSetPrice = sum(gear["cost"] for gear in self.gearSet)
 
 
     def asDict(self):

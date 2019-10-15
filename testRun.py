@@ -1,6 +1,6 @@
 import itertools
 import json
-import tqdm
+# import tqdm
 from conversions import *
 from GearBoxObject import *
 from MotorInput import *
@@ -103,7 +103,7 @@ def FindBest(numberOfGears, jsonFiles, showFigure = True):
 
 
     # for indexCombination in permutationIndices:
-    for indexCombination in tqdm.tqdm(permutationIndices):
+    for indexCombination in permutationIndices:
 
         thisGearBox = gearBoxObject(gearsList, indexCombination)
         if thisGearBox.validGearBoxPitch():
@@ -135,20 +135,7 @@ def FindBest(numberOfGears, jsonFiles, showFigure = True):
             pass
             # print("Invalid configuration ...")
     
-    solution = {# "motor_input" : bestMotorInput,
-                # "gear_set": bestGearSet.asDict(),
-                "gearbox_omega_list" : bestGearBoxOmegaOutputList,
-                "gearbox_torque_lsit" : bestGearBoxTorqueOutputList,
-                # "power_screw": powerScrew.asDict(),
-                "power_screw_omega_list" : bestPowerScrewRPMList,
-                "power_screw_torque_list" : bestPowerScrewTorqueList,
-                "intersection_rpm": bestOmega,
-                "intersection_torque": bestTorque,
-                "score": bestOutPutScore,
-                "flowrate": bestOutputFlowRate
-                 }
-
-    print(type(bestPowerScrewRPMList.tolist()))
+    print(bestGearSet.asDict())
 
     solution = {
                 "motor_input" : bestMotorInput,
@@ -175,7 +162,7 @@ def FindBest(numberOfGears, jsonFiles, showFigure = True):
             print("best flowrate: ", bestOutputFlowRate)
             plt.plot(motorOmegaList, motorTorqueList, "blue", label = "Motor")
             plt.plot(bestGearBoxOmegaOutputList, bestGearBoxTorqueOutputList, "red", label = "GearBox")
-            plt.plot(bestPowerScrewRPMList, powerScrewTorqueList, "green", label = "PowerScrew")
+            # plt.plot(bestPowerScrewRPMList, powerScrewTorqueList, "green", label = "PowerScrew")
             plt.xlabel("RPM")
             plt.ylabel("Best case graph")
             plt.title("Torque vs RPM")

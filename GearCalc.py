@@ -42,8 +42,11 @@ def createAllPermutationIndices( overallNumberOfGears, minNumberOfGears = 1, max
     for numOfGears in range(minNumberOfGears, maxNumberOfGears + 1):
         # We can only have an even number of gears
         if numOfGears % 2 == 0:
-            IndicesList =  keysList * numOfGears
+            IndicesList =  keysList # * numOfGears
             IndicesPermutationsDictionary[numOfGears] = itertools.permutations(IndicesList, numOfGears)
+    
+    # print([item for item in IndicesPermutationsDictionary[2]])
+    # print([item for item in IndicesPermutationsDictionary[2]])
     return IndicesPermutationsDictionary
 
 
