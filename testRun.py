@@ -38,6 +38,9 @@ def ShowResults(numberOfGears, jsonFiles, showFigure = False):
     permutationIndices = createAllPermutationIndices(totalNumberOfAvailableGears)[numberOfGears]
     motorOmegaList, motorTorqueList = motorValues()
 
+    
+
+
     for indexCombination in permutationIndices:
         print(permutationIndices)
         print("_____________________________")
@@ -45,6 +48,18 @@ def ShowResults(numberOfGears, jsonFiles, showFigure = False):
         if thisGearBox.validGearBoxPitch():
             print("valid configuration")
             gearBoxOmegaOutputList, gearBoxTorqueOutputList= thisGearBox.createOmegaTorqueGraph(motorTorqueList, motorOmegaList, showPlot = False)
+            
+            
+            intersectionRPM, intersectionTorque, motorOmegaInput, motorTorqueInput  = findIntersection([gearBoxOmegaOutputList, gearBoxTorqueOutputList],[rpmList,powerScrewTorqueList], [motorOmegaList, motorTorqueList])
+            thisOutputFlowRate = calculateOutputFlow(intersectionRPM)
+            thisOutputScore = thisOutputFlowRate / float(thisGearBox.gearSetPrice + powerScrewCost)
+            # thisOutputScore = intersectionRPM
+            print(thisOutputScore)
+            print(intersectionRPM)
+            print(intersectionTorque)
+            print("___________________________")
+            
+            
             if showFigure:
                 plt.plot(motorOmegaList, motorTorqueList, "blue", label = "Motor")
                 plt.plot(gearBoxOmegaOutputList, gearBoxTorqueOutputList, "red", label = "GearBox")
@@ -57,6 +72,7 @@ def ShowResults(numberOfGears, jsonFiles, showFigure = False):
         input("Next")
     
     return True
+
 
 
 def FindBest(numberOfGears, jsonFiles, showFigure = True):
@@ -76,7 +92,7 @@ def FindBest(numberOfGears, jsonFiles, showFigure = True):
     powerScrewMeanDiameter = calculateMeanDiameter(powerScrewMajorDiameter,powerScrewPitch)
 
     #Create array of possible RPM's to graph
-    rpmList = np.arange(0,5000,1)
+    rpmList = np.arange(0,2000,1)
     pistonVelocity = findPistonVelocity(rpmList ,powerScrewPitch)
     chamberPressure = findPressure(pistonVelocity)
     requiredForce = findForce(chamberPressure)
@@ -164,7 +180,7 @@ def FindBest(numberOfGears, jsonFiles, showFigure = True):
             print("Best RPM: ", bestOmega)
             print("best flowrate: ", bestOutputFlowRate)
             plt.plot(motorOmegaList, motorTorqueList, "blue", label = "Motor")
-            plt.plot(bestGearBoxOmegaOutputList, bestGearBoxTorqueOutputList, "red", label = "GearBox")
+            plt.plot(bestGearBoxOmegaOutputList, bestGearBoxTorqueOutputList)# , "red", label = "GearBox")
             plt.plot(bestPowerScrewRPMList, powerScrewTorqueList, "green", label = "PowerScrew")
             plt.xlabel("RPM")
             plt.ylabel("Best case graph")
@@ -175,9 +191,9 @@ def FindBest(numberOfGears, jsonFiles, showFigure = True):
     return True
 
 
-FindBest(2, "gear_data.json", True)
+# FindBest(2, "gear_data.json", True)
 # """[run function required]
 # """
 
 
-# ShowResults(2, "gear_data.json", True)
+ShowResults(2, "gear_data.json", True)
