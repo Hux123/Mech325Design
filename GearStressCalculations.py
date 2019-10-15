@@ -52,9 +52,9 @@ def getElasticModulus(material):
         [int] -- [Elastic]
     """
     if material == 1020:
-        return 29000
+        return 29*10**6
     else:
-        return 28000
+        return 28*10**6
 
 def getDynamicFactor(qualityFactor, tangentialSpeed):
     """[Calculates Dynamic Factor]
@@ -90,7 +90,7 @@ def getAllowableContactStress(hardness):
     Returns:
         [double] -- [Allowable Contact Stress]
     """
-    return 82.3 * hardness + 12150
+    return 322 * hardness + 29100
 
 def getSizeFactor(diametralPitch, lewisFormFactor, faceWidth):
     """[Calculates Size Factor]
@@ -181,6 +181,16 @@ def getBendingStress(tangentialForce, dynamicFactor, sizeFactor, diametralPitch,
     Returns:
         [double] -- [Bending Stress]
     """
+    # print("start")
+    # print(tangentialForce)
+    # print(overloadFactor)
+    # print(dynamicFactor)
+    # print(sizeFactor)
+    # print(diametralPitch)
+    # print(loadDistributionFactor)
+    # print(faceWidth)
+    # print(bendingGeometryFactor)
+    # print("end")
     return tangentialForce * overloadFactor * dynamicFactor * sizeFactor * diametralPitch * loadDistributionFactor / (faceWidth * bendingGeometryFactor)
 
 def getBendingFactorOfSafety(allowableStress, bendingStress, reliabilityFactor, stressCycleFactor):
@@ -239,7 +249,7 @@ def checkStresses(gearPairDictionary):
     """
     
     """ Retrieves necessary values from the gear map """
-    requiredFactorOfSafety = 2.5 
+    requiredFactorOfSafety = 2
     tangentialSpeed = gearPairDictionary["tangential_velocity"]
     tangentialForce = gearPairDictionary["tangential_force"]
     pinion = gearPairDictionary["gears"][0]
@@ -291,7 +301,6 @@ def checkStresses(gearPairDictionary):
     gearBFOS = getBendingFactorOfSafety(gAllowableBendingStress, gBendingStress, reliabilityFactor, bendingStressCycleFactor)
     pinionCFOS = getContactFactorOfSafety(pAllowableContactStress, pittingStressCycleFactor, pContactStress, pHardnessRatioFactor, reliabilityFactor)
     gearCFOS = getContactFactorOfSafety(gAllowableContactStress, pittingStressCycleFactor, gContactStress, gHardnessRatioFactor, reliabilityFactor)
-   
     """ Determine if factor of safety requirement is met """
     if pinionBFOS > requiredFactorOfSafety and gearBFOS > requiredFactorOfSafety and pinionCFOS**2 > requiredFactorOfSafety and gearCFOS**2 > requiredFactorOfSafety:
         return True
