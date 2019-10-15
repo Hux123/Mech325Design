@@ -193,19 +193,10 @@ def FindBest(numberOfGears, jsonFiles, showFigure = True):
     
     return True
 
-<<<<<<< HEAD
-print("running")
-FindBest(2, "gear_data.json", True)
-=======
 
 # FindBest(2, "gear_data.json", True)
->>>>>>> 79b19068fd0380cffbc45d15ef1e779c20d9e961
 # """[run function required]
 # """
 
 
-<<<<<<< HEAD
-# ShowResults(2, "gear_data.json", True)
-=======
 ShowResults(2, "gear_data.json", True)
->>>>>>> 79b19068fd0380cffbc45d15ef1e779c20d9e961
