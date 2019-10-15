@@ -26,7 +26,7 @@ def ShowResults(numberOfGears, jsonFiles, showFigure = False):
     powerScrewMeanDiameter = calculateMeanDiameter(powerScrewMajorDiameter,powerScrewPitch)
 
     #Create array of possible RPM's to graph
-    rpmList = np.arange(0,2000,1)
+    rpmList = np.arange(0,5000,1)
     pistonVelocity = findPistonVelocity(rpmList ,powerScrewPitch)
     chamberPressure = findPressure(pistonVelocity)
     requiredForce = findForce(chamberPressure)
@@ -180,8 +180,9 @@ def FindBest(numberOfGears, jsonFiles, showFigure = True):
             print("Best RPM: ", bestOmega)
             print("best flowrate: ", bestOutputFlowRate)
             plt.plot(motorOmegaList, motorTorqueList, "blue", label = "Motor")
-            plt.plot(bestGearBoxOmegaOutputList, bestGearBoxTorqueOutputList)# , "red", label = "GearBox")
+            plt.plot(bestGearBoxOmegaOutputList, bestGearBoxTorqueOutputList , "red", label = "GearBox")
             plt.plot(bestPowerScrewRPMList, powerScrewTorqueList, "green", label = "PowerScrew")
+            idx = np.argwhere(np.diff(np.sign( bestGearBoxTorqueOutputList- g))).flatten()
             plt.xlabel("RPM")
             plt.ylabel("Best case graph")
             plt.title("Torque vs RPM")

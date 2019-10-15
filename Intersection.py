@@ -11,6 +11,40 @@ def findIntersection(gearBox, powerScrew, motorInput):
     rpmP, torqueP = powerScrew[0], powerScrew[1]
     rpmM, torqueM = motorInput[0],motorInput[1]
 
+
+    startIndexG = 0
+    for i in range(0, len(rpmG)):
+        if torqueG[i] != 0 :
+            startIndexG = i
+            break
+    
+    startRPMG = rpmG[startIndexG]
+    startTorqueG = torqueG[startIndexG]
+
+    endIndexG = len(rpmG) - 1
+    i = len(rpmG) - 1
+    while i > 0:
+        if torqueG[i] != 0 :
+            endIndexG = i
+            break
+        i -= 1
+        
+    endRPMG = rpmG[endIndexG]
+    endTorqueG = torqueG[endIndexG]
+
+    slopeG = (endTorqueG - startTorqueG) / (endRPMG - startRPMG)
+
+    startRPMG = int(startRPMG)
+    endRPMG = int(endRPMG)
+
+    torqueG = []
+    rpmG = []
+    for omega in range(startRPMG, endRPMG + 1):
+        torque = slopeG * (omega - startRPMG) + startTorqueG
+        torqueG.append(torque)
+        rpmG.append(omega)
+
+
     intersectionRPM = 0
     intersectionTorque = 0
     motorInputRPM = 0
@@ -22,5 +56,8 @@ def findIntersection(gearBox, powerScrew, motorInput):
             motorInputRPM = rpmM[index]
             motorInputTorque = torqueM[index]
             break
+            
+
+
     
     return intersectionRPM, intersectionTorque, motorInputRPM, motorInputTorque
