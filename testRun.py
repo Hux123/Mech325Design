@@ -101,9 +101,12 @@ def FindBest(numberOfGears, jsonFiles, showFigure = True):
     permutationIndices = createAllPermutationIndices(totalNumberOfAvailableGears)[numberOfGears]
     motorOmegaList, motorTorqueList = motorValues()
 
+    print("working")
+
 
     # for indexCombination in permutationIndices:
     for indexCombination in permutationIndices:
+        print(indexCombination)
 
         thisGearBox = gearBoxObject(gearsList, indexCombination)
         if thisGearBox.validGearBoxPitch():
@@ -174,7 +177,7 @@ def FindBest(numberOfGears, jsonFiles, showFigure = True):
     
     return True
 
-
+print("running")
 FindBest(2, "gear_data.json", True)
 # """[run function required]
 # """
