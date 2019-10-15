@@ -21,18 +21,20 @@ def findIntersection(gearBox, powerScrew, motorInput):
     startRPMG = rpmG[startIndexG]
     startTorqueG = torqueG[startIndexG]
 
+
     endIndexG = len(rpmG) - 1
     i = len(rpmG) - 1
-    while i > 0:
+    while i > startIndexG:
         if torqueG[i] != 0 :
             endIndexG = i
             break
         i -= 1
-        
+    
+
     endRPMG = rpmG[endIndexG]
     endTorqueG = torqueG[endIndexG]
 
-    slopeG = (endTorqueG - startTorqueG) / (endRPMG - startRPMG)
+    slopeG = float(endTorqueG - startTorqueG) / (endRPMG - startRPMG)
 
     startRPMG = int(startRPMG)
     endRPMG = int(endRPMG)
