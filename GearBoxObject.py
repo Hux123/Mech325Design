@@ -140,9 +140,8 @@ class gearBoxObject():
                 omegaOutputList.append(outputOmega)
                 torqueOutputList.append(outputTorque)
             else:
-                print("FUCK")
                 omegaOutputList.append(outputOmega)
-                torqueOutputList.append(100000000000)
+                torqueOutputList.append(100)
         
         if showPlot:
             plt.plot(omegaOutputList, torqueOutputList)
